@@ -106,7 +106,8 @@ class CommCounterHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html;charset=utf-8'
         roomid  = self.request.get('roomid')
-        
+        max_count = self.request.get('max_count',default_value="30")
+
         session = get_current_session()
             
         if session.has_key("user")==False:
@@ -145,20 +146,34 @@ class CommBoardHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html;charset=utf-8'
         roomid  = self.request.get('roomid')
         
-        session = get_current_session()
+        if roomid =='':
+            session = get_current_session()
             
-        if session.has_key("user")==False:
-            self.response.write("{\"status\":false }")
+            if session.has_key("user")==False:
+                self.response.write("{\"status\":false }")
         
-        myuser = session['user']
-        qry    = Record.query(Record.uid == myuser['id']).order(-Record.score)
-        rcs    = qry.fetch()
+            myuser = session['user']
+            qry    = Record.query(Record.uid == myuser['id']).order(-Record.score)
+            rcs    = qry.fetch()
         
-        output = []
-        for rc in rcs:
-            output.append({"score": rc.score, "time": int(rc.time.strftime('%s')) })
+            output = []
+            for rc in rcs:
+                output.append({"score": rc.score, "time": int(rc.time.strftime('%s')) })
 
-        self.response.write(json.dumps(output))
+                
+            self.response.write(json.dumps(output))
+        else:
+            qry    = Record.query(Record.rid == roomid).order(-Record.score)    
+            rcs    = qry.fetch()
+        
+            output = []
+            for rc in rcs:
+                output.append({"score": rc.score, "time": int(rc.time.strftime('%s')) })
+
+            self.response.write(json.dumps(output))
+
+                
+
         return
 
 

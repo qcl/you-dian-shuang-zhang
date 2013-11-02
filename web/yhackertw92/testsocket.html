@@ -40,6 +40,15 @@
 			RenderUsers(data["from"]);
 			
 		}else if(data["method"]=="incr"){
+			//設定終止條件
+			if(data["from"]["id"]==roominfo["current"]["id"] && data["count"]>=30){
+				$(".touchCover").animate({"top": 60 },1200);
+				$(".touchCover").html("<h1 style='font-size:100px;color:#FFF;padding-top:80px;'>End</h1>");
+				$(".touchCover").removeClass("hkbg_purple");
+				$(".touchCover").addClass("hkbg_blue");
+				return;
+			}
+			
 			$.map($("#users > div"),function($elem){
 				$elem = $($elem);
 				if($elem.data("uid")==data["from"]["id"]){
@@ -61,12 +70,12 @@
 		if(user==null){
 			$("#users").html("");
 			$.map(roominfo["users"],function(item){
-				var $div =$("<div><img src='https://graph.facebook.com/"+item["id"]+"/picture'/>" + item["name"] + "<span style='display:inline-block;color:red'></span></div>")
+				var $div = $("<div><img src='https://graph.facebook.com/"+item["id"] + "/picture?width=80&height=80'/>" + "</div>")
 						  .data("uid", item["id"]);
 				$("#users").append($div);
 			});
 		}else{
-			var $div =$("<div><img src='https://graph.facebook.com/"+user["id"]+"/picture'/>" + user["name"] + "<span style='display:inline-block;color:red'></span></div></div>")
+			var $div =$("<div><img src='https://graph.facebook.com/"+user["id"] + "/picture?width=80&height=80'/>" + "</div>")
 			 			.data("uid", user["id"]);
 			$("#users").append($div);
 		}
@@ -84,7 +93,7 @@
 		 .done(function(resp){
 			 roominfo = resp;
 			 console.log(resp);
-			 $("#roomlk").val("http://"+ location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
+			 $("#roomlk").val("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]);
 			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
 			 CreateSocket(resp["token"]);
 		  });
@@ -97,28 +106,67 @@
 	});
   </script>
   <div id="headerbar"></div>
+  <!-- 底圖-->
+  <div class="bgloading" style="text-align:center; height:calc(100% - 80px);width:100%; vertical-align : middle;">
+  	<img src="./img/ajaxloading.gif"style="margin-top:200px;" />
+  </div>
+  <!-- 使用者清單 -->
+  <div class="touchList hk_cover hkbg_white" >
+  		<div style=" position:relative; height:100%;padding-top:20px;">
+        	<div style="text-align:center;"><span style="color:#000; font-size:30px;">Room Link:</span><br/><input id="roomlk" type="text" style="width:350px;padding:5px;" /></div>
+  			<div id="users"></div>
+        </div>
+  </div>
+  <!-- 說明版 -->
+  <div id="readyban" class="hkbg_green"><button>Ready</button></div>
+  
   <div class="touchCover hk_cover hkbg_blue"><button>Pause</button></div>
   <div class="touchControl hkbg_blue"></div>
-  <center>
-	<div class="touchArea">
-    	<span id="counter"><span style="font-size:76px; padding-top: 13px; display: inline-block;">Start</span></span>
-    	<div id="innerR"></div>
-    	<div id="r1" class="ring" ></div>
-    	<div id="r2" class="ring"></div>
-	</div>
-   </center>
-   <audio id="player" preload="auto" controls>
-   </audio>
-   <audio id="ma-speech" preload="auto" controls>
+  <div id="touchboard">
+  	<center>
+		<div class="touchArea">
+    		<span id="counter"><span style="font-size:76px; padding-top: 13px; display: inline-block;">Start</span></span>
+    		<div id="innerR"></div>
+    		<div id="r1" class="ring" ></div>
+    		<div id="r2" class="ring"></div>
+		</div>
+   	</center>
+   	<audio id="player" preload="auto" controls>
+   	</audio>
+   	<audio id="ma-speech" preload="auto" controls>
     	<source src="./audio/one-to-ten.mp3" type="audio/mpeg" />
-   </audio>
-  
-  <div><span style="color:#FFF;">Room Link:</span> <input id="roomlk" type="text" style="width:400px;" /></div>
-  <button id="pushup">+1</button>
-  <div id="users">
-  		
+   	</audio>
   </div>
-  <script>
+  
+  <button id="pushup">+1</button>
+  <script type="text/javascript">
+  
+  var TestCase = function(){
+	  LoadExistingUsers();
+  }
+  
+  function LoadExistingUsers(){ //載入要參戰的清單
+  	  $(".bgloading").hide();
+   	  $(".touchList").animate({"top":60},1000);
+	  //封盤準備開始
+	  $("#readyban button").click(function(){
+		  $(this).data("flag", true);
+		  
+		  $("#readyban").animate({"height": $(window).height()-60 },1000,function(){
+			  
+		  	  $(".touchList").hide();
+		  	  $("#readyban button").hide();
+		      $("#touchboard").show();
+			  setTimeout(function(){ $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
+		  });
+		  
+		  $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>十秒鐘後開始<br/>先做完扶立挺身<br/>三十下者<br/><br/></h2><h1 style='font-size:100px'>勝</h1>")
+		  
+	  });
+  };
+  
+  TestCase();
+ 
   function ControlFadeIn(){
 	  var $touchControl = $(".touchControl");
 	  
@@ -136,12 +184,12 @@
 					  $("button.contbtn",$touchControl).css({"width":$(window).width()*0.49,"opacity": 0,"display":"inline-block" }); 
 					  $("button.contbtn",$touchControl).animate({"opacity":1},800,aniCB);
 					  },
-		function() {  $("button",$touchControl).click(function(){ ControlFadeOut($(this).attr("class"));  }); }	
-		
+		function() {  $("button",$touchControl).click(function(){ ControlFadeOut($(this).attr("class"));  }); }
 	  ];
 	  $(document).queue("myAnimation", funlist);
 	  aniCB();
-  }
+  };
+  
   function ControlFadeOut(css){
 	  var $touchControl = $(".touchControl");
 	  
@@ -161,7 +209,11 @@
 			}
 		},
 		function() { $(".touchCover").animate({"top": 60 },1200,aniCB); },
-		function() { $(".touchCover").data("flag",null);$(".touchCover").removeClass("hkbg_purple");$(".touchCover").addClass("hkbg_blue"); }
+		function() { $(".touchCover").data("flag",null);
+					 $(".touchCover").removeClass("hkbg_purple");
+					 $(".touchCover").addClass("hkbg_blue"); 
+					 //TODO 跳回設定頁
+		}
 			
 	  ];
 	  $(document).queue("myAnimation", funlist);
@@ -180,6 +232,10 @@
 	  var player = $("#player")[0];
 	  var panddingAni1 = 0;
 	  var panddingAni2 = 0;
+	  
+	  $touchCover.css({"top": $(window).height()- 60 }).data("flag",true).addClass("hkbg_purple");
+	  $("button",$touchCover).fadeIn(500);
+	  
   	  $touchCover.bind("click",function(){
 		  console.log($(this).data("flag"));
 		 if($(this).data("flag")!=null) return;

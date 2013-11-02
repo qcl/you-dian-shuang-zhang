@@ -1,6 +1,9 @@
 @charset "UTF-8";
 /* CSS Document */
-
+html, body
+{
+    height: 100%;
+}
 body{
     background: black;
 	overflow:hidden;
@@ -12,11 +15,12 @@ body{
 	width:40px;
 	vertical-align: bottom;
 }
+
 .touchCover {
 	text-align:center;
 }
 
-.touchCover button, .touchControl button{
+.touchCover button, .touchControl button, #readyban button{
 	border:none;
 	background-color:transparent;
 	color:#FFF;
@@ -27,12 +31,62 @@ body{
 .hk_cover{
 	position:absolute;
 	z-index:1000;
-	min-height:calc(100% - 60px);;
+	min-height:calc(100% - 60px);
 	top:60px;
 	left:0px;
 	width:100%;
 }
+
+.touchList{
+	top:100%;
+	text-align:center;
+	
+}
+
+#users {
+	padding-top:60px;
+}
+#users div{
+	display:inline-block;
+	margin:5px;
+}
+
+#readyban{
+	position:fixed;
+	bottom:0px; 
+	left:0px;
+	height:60px;
+	width:100%;
+	text-align:center;
+	z-index: 2000;
+	color:#FFF;
+}
+
+#readyban button{
+	display:inline-block;
+	font-size:20px;
+	line-height:40px;
+}
+#readyban button:active{
+	color:#000;
+}
+
+
+#users div img{
+	width:80px;
+	border-radius:4px;
+}
+.hkbg_white{
+	
+	background-color: #FFF;
+	-webkit-transition: background-color 2000ms linear;
+     -moz-transition: background-color 2000ms linear;
+     -o-transition: background-color 2000ms linear;
+     -ms-transition: background-color 2000ms linear;
+     transition: background-color 2000ms linear;
+}
 .hkbg_blue{
+	
 	background-color: #56bdeb;
 	-webkit-transition: background-color 2000ms linear;
      -moz-transition: background-color 2000ms linear;
@@ -40,7 +94,20 @@ body{
      -ms-transition: background-color 2000ms linear;
      transition: background-color 2000ms linear;
 }
+
+
+.hkbg_green{
+	
+	background-color: rgb(18,171,130);
+	-webkit-transition: background-color 2000ms linear;
+     -moz-transition: background-color 2000ms linear;
+     -o-transition: background-color 2000ms linear;
+     -ms-transition: background-color 2000ms linear;
+     transition: background-color 2000ms linear;
+}
+
 .touchControl {
+	
 	color:#FFF;
 	position:fixed;
 	right:0px;
@@ -50,7 +117,9 @@ body{
 	text-align:right;
 }
 
-
+#touchboard{
+	display:none;
+}
 .hkbg_purple{
      background-color: rgb(224,149,205);
      -webkit-transition: background-color 2000ms linear;

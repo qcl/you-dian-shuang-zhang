@@ -12,6 +12,12 @@ indexes:
 
 - kind: Record
   properties:
+  - name: rid
+  - name: score
+    direction: desc
+
+- kind: Record
+  properties:
   - name: uid
   - name: score
     direction: desc
