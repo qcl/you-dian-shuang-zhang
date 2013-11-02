@@ -24,7 +24,12 @@ except:
     import json
 
 
-FacebookOauth = { "appId":"542121675865178", "secret":"8425163cf581ee8161f9487c490e7094" }
+FacebookOauth = { 
+    "appId":"542121675865178", 
+    "secret":"8425163cf581ee8161f9487c490e7094",
+    #"redir": "http://yhackertw92.appspot.com/callback"
+    "redir": "http://localhost:8080/callback"
+}
 
 class LoginHandler(webapp2.RequestHandler):
     def get(self):
@@ -36,7 +41,7 @@ class LoginHandler(webapp2.RequestHandler):
         
          
         fblogin = ("https://www.facebook.com/dialog/oauth?client_id="+FacebookOauth["appId"] + "&"+
-        "redirect_uri="+"http://yhackertw92.appspot.com/callback"+
+        "redirect_uri=" + FacebookOauth["redir"] +
         "&scope=publish_stream,email")
 
         self.redirect(fblogin)
@@ -51,8 +56,8 @@ class CallbackHandler(webapp2.RequestHandler):
         code = self.request.get('code')
         
         fboauth = ("https://graph.facebook.com/oauth/access_token?client_id="+FacebookOauth["appId"]+ "&"+
-                   "redirect_uri=http://yhackertw92.appspot.com/callback&"+
-                   "client_secret="+FacebookOauth["secret"] +"&"+
+                   "redirect_uri=" + FacebookOauth["redir"] +
+                   "&client_secret=" + FacebookOauth["secret"] +"&"+
                    "code="+code)
         result = urlfetch.fetch(fboauth)
         token = result.content
@@ -73,6 +78,7 @@ class UserHandler(webapp2.RequestHandler):
             self.response.write(json.dumps(session['user']))
         else:
             self.response.write("{\"error\":\"login please\"}")
+
 
 class TestChinese(webapp2.RequestHandler):
     def get(self):
