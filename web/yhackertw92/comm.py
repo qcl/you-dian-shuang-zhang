@@ -20,7 +20,9 @@ import logging
 from google.appengine.api import channel
 from gaesessions import get_current_session
 from google.appengine.api import memcache
+from google.appengine.ext import ndb
 import datetime
+
 import hashlib
 try:
     import simplejson as json
@@ -53,7 +55,11 @@ class CommCreateHandler(webapp2.RequestHandler):
         
         memcache.add(key="room["+ roomid +"]" , value=json.dumps(output), time=86400)
         
-        
+class Record(ndb.Model):
+    uid   = ndb.StringProperty()
+    rid   = ndb.StringProperty()
+    score = ndb.IntegerProperty()
+    time  = ndb.DateTimeProperty(auto_now_add=True)
         
 class CommJoinHandler(webapp2.RequestHandler):
     def get(self):
@@ -87,22 +93,24 @@ class CommJoinHandler(webapp2.RequestHandler):
         logging.info(json.dumps(roominfo))
         #push data
         data = {
-            "from": myuser,
+            "from" : myuser,
             "method": "join"
         }
         
-
         channel.send_message(roomid, json.dumps(data))
 
         self.response.write(json.dumps(roominfo))
- 
+
 class CommCounterHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html;charset=utf-8'
         roomid  = self.request.get('roomid')
         
         session = get_current_session()
-        
+            
+        if session.has_key("user")==False:
+            self.response.write("{\"status\":false }")
+            
         # save personal data
         if session.has_key("room["+ roomid +"]"): 
             session["room["+ roomid +"]"] = session["room["+ roomid +"]"] + 1
@@ -110,20 +118,54 @@ class CommCounterHandler(webapp2.RequestHandler):
             session["room["+ roomid +"]"] = 1
         
         myuser  = session['user']
+        
+        key = ndb.Key("Record", str(myuser["id"]) + "_" + str(roomid))
+        pushupRc = Record(key=key)
+        pushupRc.populate(uid=str(myuser["id"]), rid=str(roomid), score=session["room["+ roomid +"]"])
+        pushupRc.put()
+
+        logging.info("[K]"+str(key.kind()))
+        logging.info("[I]"+str(key.id()))
+
         #push data
         output = {
             "from": myuser,
             "count": session["room["+ roomid +"]"],
             "method": "incr"
         }
+
         channel.send_message(roomid, json.dumps(output))
 
         self.response.write("{\"status\":true }")
 
 
+class CommBoardHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'text/html;charset=utf-8'
+        roomid  = self.request.get('roomid')
+        
+        session = get_current_session()
+            
+        if session.has_key("user")==False:
+            self.response.write("{\"status\":false }")
+        
+        myuser = session['user']
+        qry    = Record.query(Record.uid == myuser['id']).order(-Record.score)
+        rcs    = qry.fetch()
+        
+        output = []
+        for rc in rcs:
+            output.append({"score": rc.score, "time": int(rc.time.strftime('%s')) })
+
+        self.response.write(json.dumps(output))
+        return
+
+
+
 app = webapp2.WSGIApplication([
     ('/create', CommCreateHandler),
     ('/join', CommJoinHandler),
-    ('/push',CommCounterHandler)
+    ('/push', CommCounterHandler),
+    ('/board', CommBoardHandler)
 ], debug=True)
 

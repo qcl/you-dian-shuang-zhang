@@ -41,6 +41,9 @@ handlers:
 - url: /push
   script: comm.app
 
+- url: /board
+  script: comm.app
+
 - url: .*
   script: main.app
 
