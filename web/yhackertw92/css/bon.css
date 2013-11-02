@@ -1,0 +1,138 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{
+    background: black;
+	overflow:hidden;
+}
+#headerbar{
+	height:60px;
+}
+#headerbar img{
+	width:40px;
+	vertical-align: bottom;
+}
+.touchCover {
+	text-align:center;
+}
+
+.touchCover button, .touchControl button{
+	border:none;
+	background-color:transparent;
+	color:#FFF;
+	font-size:30px;
+	display:none;
+	text-align:center;
+}
+.hk_cover{
+	position:absolute;
+	z-index:1000;
+	min-height:calc(100% - 60px);;
+	top:60px;
+	left:0px;
+	width:100%;
+}
+.hkbg_blue{
+	background-color: #56bdeb;
+	-webkit-transition: background-color 2000ms linear;
+     -moz-transition: background-color 2000ms linear;
+     -o-transition: background-color 2000ms linear;
+     -ms-transition: background-color 2000ms linear;
+     transition: background-color 2000ms linear;
+}
+.touchControl {
+	color:#FFF;
+	position:fixed;
+	right:0px;
+	bottom:0px;
+	height:60px;
+	z-index:1100;
+	text-align:right;
+}
+
+
+.hkbg_purple{
+     background-color: rgb(224,149,205);
+     -webkit-transition: background-color 2000ms linear;
+     -moz-transition: background-color 2000ms linear;
+     -o-transition: background-color 2000ms linear;
+     -ms-transition: background-color 2000ms linear;
+     transition: background-color 2000ms linear;
+}
+
+
+
+#headerbar span{
+	font-size:20px;
+	color:#FFF;
+	display:inline-block;
+	margin-left:10px;
+	line-height:40px;
+	font-family: helvetica;
+}
+
+.touchArea{
+    position: relative; 
+    background-color: transparent;
+    width: 300px;
+    height: 300px;
+}
+
+.ring{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top:92px;
+    left:92px;
+    background-color: transparent;
+    border: 8px black solid;
+    -webkit-animation-name: ani; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-play-state: paused;
+}
+
+.delay{
+    -webkit-animation-delay: 0.3s;
+}
+
+@-webkit-keyframes ani {
+    0% {-webkit-transform: scale(1); opacity: 0; border: 8px black solid;}
+    100% {-webkit-transform: scale(4); opacity: 1; border: 2px white solid} 
+}
+
+#counter{
+    z-index: 10;
+    position: relative;
+    top: 93px;
+    font-size: 100px;
+    font-family: helvetica;
+}
+
+#innerR{
+    z-index: 8;
+    position: absolute;
+    top:50px;
+    left:50px;
+    width: 200px;
+    height: 200px;
+    background: white;
+    border-radius: 50%;
+}
+
+#player{
+    display: none;
+}
+
+#ma-speech{
+    /* display: none; */
+}
+
+.hide{
+    display:none;
+}
+
+
+

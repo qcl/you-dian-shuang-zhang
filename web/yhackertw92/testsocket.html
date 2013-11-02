@@ -3,11 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Test Socket</title>
+<link rel="stylesheet" href="./css/bon.css">
 <script type="text/javascript" src="./js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="./js/bumbler-to-speech.js" /></script>
 <script type="text/javascript" src="/_ah/channel/jsapi"></script>
+
 </head>
 <body>
-  <script>
+  <script type="text/javascript">
   	function CreateSocket(token){
     	var channel = new goog.appengine.Channel(token);
     	socket = channel.open();
@@ -70,36 +73,184 @@
 	}
 	var roominfo = null;
 	$(function(){
-		location.host
+		method = "./create";
 		if (QueryString("roomid")==null){
-			$.get("./create",null,null,"json")
-			 .done(function(resp){
-				 roominfo = resp;
-				 console.log(resp);
-				 $("#roomlk").val("http://"+location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
-				 CreateSocket(resp["token"]);
-			  });
+			method = "./create";
 		}else{
-			$.get("./join", { "roomid": QueryString("roomid") },null,"json")
-			 .done(function(resp){
-				 roominfo = resp;
-				 console.log(resp);
-				 $("#roomlk").val("http://"+ location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
-				 CreateSocket(resp["token"]);
-			  });
+			method = "./join";
 		}
 		
+		$.get(method, { "roomid": QueryString("roomid") },null,"json")
+		 .done(function(resp){
+			 roominfo = resp;
+			 console.log(resp);
+			 $("#roomlk").val("http://"+ location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
+			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
+			 CreateSocket(resp["token"]);
+		  });
+		
 		$("#pushup").bind("click",function(){
+			$("#pushup").trigger("push");
+		}).bind("push",function(){
 			$.get("./push",{"roomid":roominfo["roomid"] });
 		});
 	});
-	
   </script>
-  <div>Room Link <input id="roomlk" type="text" style="width:400px;" /></div>
+  <div id="headerbar"></div>
+  <div class="touchCover hk_cover hkbg_blue"><button>Pause</button></div>
+  <div class="touchControl hkbg_blue"></div>
+  <center>
+	<div class="touchArea">
+    	<span id="counter"><span style="font-size:76px; padding-top: 13px; display: inline-block;">Start</span></span>
+    	<div id="innerR"></div>
+    	<div id="r1" class="ring" ></div>
+    	<div id="r2" class="ring"></div>
+	</div>
+   </center>
+   <audio id="player" preload="auto" controls>
+   </audio>
+   <audio id="ma-speech" preload="auto" controls>
+    	<source src="./audio/one-to-ten.mp3" type="audio/mpeg" />
+   </audio>
+  
+  <div><span style="color:#FFF;">Room Link:</span> <input id="roomlk" type="text" style="width:400px;" /></div>
   <button id="pushup">+1</button>
   <div id="users">
   		
   </div>
+  <script>
+  function ControlFadeIn(){
+	  var $touchControl = $(".touchControl");
+	  
+	  var aniCB=function() {
+    		$(document).dequeue("myAnimation");
+      };
+	  var funlist =[
+	  	function() {  $touchControl.animate({"width":"50%"},200, aniCB);    },
+		function() {  $touchControl.prepend("<button class='leavebtn'>離開</button>");  
+					  $("button.leavebtn",$touchControl).css({"width":$(window).width()*0.49,"opacity": 0,"display":"inline-block" });
+					  $("button.leavebtn",$touchControl).animate({"opacity":1},800,aniCB);
+				    },
+		function() {  $touchControl.animate({"width":"100%"},200,aniCB);    },
+		function() {  $touchControl.prepend("<button class='contbtn'>繼續</button>"); 
+					  $("button.contbtn",$touchControl).css({"width":$(window).width()*0.49,"opacity": 0,"display":"inline-block" }); 
+					  $("button.contbtn",$touchControl).animate({"opacity":1},800,aniCB);
+					  },
+		function() {  $("button",$touchControl).click(function(){ ControlFadeOut($(this).attr("class"));  }); }	
+		
+	  ];
+	  $(document).queue("myAnimation", funlist);
+	  aniCB();
+  }
+  function ControlFadeOut(css){
+	  var $touchControl = $(".touchControl");
+	  
+	  var aniCB=function() {
+    		$(document).dequeue("myAnimation");
+      };
+	  var funlist =[
+	  	function() { $("button.contbtn",$touchControl).animate({"opacity": 0},600, aniCB); },
+		function() { $("button.contbtn",$touchControl).remove(); $touchControl.animate({"width":"50%"},300,aniCB);  },
+		function() { $("button.leavebtn",$touchControl).animate({"opacity": 0},600, aniCB); },
+		function() { $("button.leavebtn",$touchControl).remove(); $touchControl.animate({"width":"0%"},300,aniCB);  },
+	  	function() {
+			console.log(css);
+			if(css=="leavebtn"){
+				$("button",$(".touchCover")).fadeOut(300,aniCB);
+			}
+		},
+		function() { $(".touchCover").animate({"top": 60 },1200,aniCB); },
+		function() { $(".touchCover").data("flag", true);$(".touchCover").removeClass("hkbg_purple");$(".touchCover").addClass("hkbg_blue"); }
+			
+	  ];
+	  $(document).queue("myAnimation", funlist);
+	  aniCB();
+  }
   
+  
+  
+  $(function(){
+  
+	  var count = 0;
+	  var $counter = $("#counter");
+	  var $touchArea = $(".touchArea");
+	  var $touchCover = $(".touchCover");
+	  var $touchControl = $(".touchControl");
+	  var player = $("#player")[0];
+	  var panddingAni1 = 0;
+	  var panddingAni2 = 0;
+  	  $touchCover.bind("click",function(){
+		 if($(this).data("flag")!=null) return;
+		 
+		 $(this).data("flag",null);
+		 $(this).trigger("opencover");
+		 $(this).unbind("opencover");
+		 
+	   }).bind("opencover",function(){
+		   
+		  $(this).addClass("hkbg_purple");
+		  $(this).animate({"top": $(window).height()- 60 },2000);
+		  var $obj = $(this);
+		  setTimeout(function(){ $("button",$obj).fadeIn(500);   },1700);
+	   });
+	   $("button",$touchCover).click(function(){
+		   ControlFadeIn();
+	   });
+	   
+  
+  	  $touchArea.click(function(){
+		  
+		  $("#pushup").trigger("push");
+		  
+		  count++;
+		  $counter.html(count);
+  
+		  speaker.numberQueue = [count];
+		  speaker.play();
+  
+		  $("#r1").css("-webkit-animation-play-state","running");
+		  $("#r1").removeClass("hide");
+  
+		  panddingAni1++;
+		  setTimeout(function(){
+			  panddingAni1--;
+			  if(panddingAni1==0){
+				  $("#r1").css("-webkit-animation-play-state","paused");
+				  $("#r1").addClass("hide");
+			  }
+		  },500);
+		  setTimeout(function(){
+			  panddingAni2++;
+			  $("#r2").css("-webkit-animation-play-state","running");
+			  $("#r2").removeClass("hide");
+			  setTimeout(function(){
+				  panddingAni2--;
+				  if(panddingAni2==0){
+					  $("#r2").css("-webkit-animation-play-state","paused");
+					  $("#r2").addClass("hide");
+				  }
+			  },500);
+		  },80);
+  
+		  //player.play();
+	  });
+  
+	  
+	  $touchArea.mouseup(function(){
+		  console.log("up");
+	  });
+  
+	  $touchArea.mousedown(function(){
+		  console.log("down");
+	  });
+  
+	  player.src="./audio/wtf.mp3";
+	  //player.src="./audio/wtf2.mp3";
+	  //$touchArea.trigger('click'); 
+  
+	  //speaker.numberQueue = [3, 2, 1, "thank"];
+	  //speaker.play();
+  });
+  </script>
 </body>
 </html>

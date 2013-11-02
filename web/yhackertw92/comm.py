@@ -50,6 +50,7 @@ class CommCreateHandler(webapp2.RequestHandler):
         myuser   = session['user']
         roominfo = {"token": token, "roomid":roomid, "users":[ myuser ]}
         output   = roominfo
+        output["current"] = myuser
 
         self.response.write(json.dumps(output))
         
@@ -98,7 +99,7 @@ class CommJoinHandler(webapp2.RequestHandler):
         }
         
         channel.send_message(roomid, json.dumps(data))
-
+        roominfo["current"] = myuser
         self.response.write(json.dumps(roominfo))
 
 class CommCounterHandler(webapp2.RequestHandler):
