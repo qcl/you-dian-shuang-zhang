@@ -122,6 +122,15 @@
 			 $("#roomlk").val("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]);
 			 $("#fbshare").attr("src","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]));
 			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
+			 
+			 if(QueryString("num")){
+				LoadSingleVersion();
+				roominfo["criteria"] = parseInt(QueryString("num"));
+	  		 }else{
+	  			LoadNetworkVersion();
+				roominfo["criteria"] = 30;
+	  		 }
+			 
 			 CreateSocket(resp["token"]);
 		  });
 		
@@ -171,8 +180,12 @@
   <script type="text/javascript">
   
   var TestCase = function(){
-	  LoadNetworkVersion();
-	  //LoadSingleVersion();
+	  if(QueryString("num")){
+		LoadSingleVersion()
+	  }else{
+	  	LoadNetworkVersion();
+	  }
+	  //;
   }
   
   function LoadNetworkVersion(){ //載入要參戰的清單
@@ -193,7 +206,7 @@
 		  	  $("#readyban button").hide();
 		      $("#touchboard").show();
 			  
-			  roominfo["criteria"] = 30;
+			  
 			  roominfo["st"] = new Date();
 			  setTimeout(function(){ $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
 		  });
@@ -219,7 +232,7 @@
 	  
   }
   
-  TestCase();
+  //TestCase();
  
   function ControlFadeIn(){
 	  var $touchControl = $(".touchControl");
