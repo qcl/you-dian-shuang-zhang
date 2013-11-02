@@ -49,6 +49,50 @@
     thank: {
       start: 10.73,
       duration: 1.55
+    },
+    prepare: {
+      start: 13.00,
+      duration: 0.784
+    },
+    please: {
+      start: 14.00,
+      duration: 0.784
+    },
+    no: {
+      start: 15.00,
+      duration: 0.94,
+    },
+    wewin: {
+      start: 16.00,
+      duration: 1.75
+    },
+    noteasy: {
+      start: 18.00,
+      duration: 0.836
+    },
+    notgood: {
+      start: 19.00,
+      duration: 0.836
+    },
+    start: {
+      start: 20.2,
+      duration: 0.875
+    },
+    fly: {
+      start: 21.1,
+      duration: 1.50
+    },
+    notbad:{
+      start: 23.00,
+      duration: 1.082
+    },
+    milestone:{
+      start: 25.00,
+      duration: 6.50
+    },
+    keypoint:{
+      start: 32.00,
+      duration: 5.0
     }
   };
 
@@ -138,6 +182,17 @@
       if (number === "thank") {
         return ["thank"];
       }
+      if (number === "prepare"){ return ["prepare"]; }
+      if (number === "please"){ return ["please"]; }
+      if (number === "no"){ return ["no"]; }
+      if (number === "wewin"){ return ["wewin"]; }
+      if (number === "noteasy"){ return ["noteasy"]; }
+      if (number === "notgood"){ return ["notgood"]; }
+      if (number === "start"){ return ["start"]; }
+      if (number === "fly"){ return ["fly"]; }
+      if (number === "notbad"){ return ["notbad"]; }
+      if (number === "milestone"){ return ["milestone"]; }
+      if (number === "keypoint"){ return ["keypoint"]; }
       if (number >= 100 || number < 1) {
         return false;
       }
