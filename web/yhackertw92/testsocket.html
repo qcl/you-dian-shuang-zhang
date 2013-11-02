@@ -160,7 +160,7 @@
 			}
 		},
 		function() { $(".touchCover").animate({"top": 60 },1200,aniCB); },
-		function() { $(".touchCover").data("flag", true);$(".touchCover").removeClass("hkbg_purple");$(".touchCover").addClass("hkbg_blue"); }
+		function() { $(".touchCover").data("flag",null);$(".touchCover").removeClass("hkbg_purple");$(".touchCover").addClass("hkbg_blue"); }
 			
 	  ];
 	  $(document).queue("myAnimation", funlist);
@@ -180,11 +180,11 @@
 	  var panddingAni1 = 0;
 	  var panddingAni2 = 0;
   	  $touchCover.bind("click",function(){
+		  console.log($(this).data("flag"));
 		 if($(this).data("flag")!=null) return;
 		 
-		 $(this).data("flag",null);
+		 $(this).data("flag",true);
 		 $(this).trigger("opencover");
-		 $(this).unbind("opencover");
 		 
 	   }).bind("opencover",function(){
 		   
