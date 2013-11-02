@@ -18,9 +18,17 @@ handlers:
 - url: /user
   script: login.app
 
-
 - url: /test
   script: login.app
+
+- url: /create
+  script: comm.app
+
+- url: /join
+  script: comm.app
+
+- url: /push
+  script: comm.app
 
 - url: .*
   script: main.app
