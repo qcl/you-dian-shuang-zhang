@@ -9,6 +9,17 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /testsocket\.html
+  static_files: testsocket.html
+  upload: testsocket\.html
+
+- url: /css
+  static_dir: css 
+- url: /images
+  static_dir: images
+- url: /js 
+  static_dir: js
+
 - url: /login
   script: login.app
 

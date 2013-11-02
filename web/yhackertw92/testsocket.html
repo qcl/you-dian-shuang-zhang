@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Test Socket</title>
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+</head>
+<body>
+  <script>
+  	function CreateSocket(token){
+    	var channel = new goog.appengine.Channel(token);
+    	socket = channel.open();
+    	socket.onopen = onOpened;
+    	socket.onmessage = onMessage;
+    	socket.onerror = onError;
+    	//socket.onclose = onClose;
+	}
+	function onOpened(){
+		console.log(new Date, "Socket Open");
+		RenderUsers();
+	}
+	function onError(){
+		console.error(new Date, "Socket Error");
+	}
+	function onMessage(msg){
+		//console.log(msg);
+		console.log(new Date, "Socket OnMsg", $.parseJSON(msg["data"]));
+		var data = $.parseJSON(msg["data"]);
+		
+		if (data["method"]=="join"){
+			for (var x= 0 ; x<roominfo["users"].length;x++ ){
+				if(roominfo["users"][x]["id"]==data["from"]["id"])
+					return;
+			}
+			roominfo["users"].push(data["from"]);
+			RenderUsers(data["from"]);
+			
+		}else if(data["method"]=="incr"){
+			$.map($("#users > div"),function($elem){
+				$elem = $($elem);
+				console.log($elem.data("uid"),data["from"]["id"] );
+				if($elem.data("uid")==data["from"]["id"]){
+					$("span",$elem).html("("+data["count"]+")");
+				}
+			});
+		};
+	}
+	function QueryString(name) {
+		var AllVars = window.location.search.substring(1);
+		var Vars = AllVars.split("&");
+		for (i = 0; i < Vars.length; i++){
+			var Var = Vars[i].split("=");
+			if (Var[0] == name) return Var[1];
+		}
+		return null;
+	};
+	function RenderUsers(user){
+		if(user==null){
+			$("#users").html("");
+			$.map(roominfo["users"],function(item){
+				var $div =$("<div><img src='https://graph.facebook.com/"+item["id"]+"/picture'/>" + item["name"] + "<span style='display:inline-block;color:red'></span></div>")
+						  .data("uid", item["id"]);
+				$("#users").append($div);
+			});
+		}else{
+			var $div =$("<div><img src='https://graph.facebook.com/"+user["id"]+"/picture'/>" + user["name"] + "<span style='display:inline-block;color:red'></span></div></div>")
+			 			.data("uid", user["id"]);
+			$("#users").append($div);
+		}
+	}
+	var roominfo = null;
+	$(function(){
+		location.host
+		if (QueryString("roomid")==null){
+			$.get("./create",null,null,"json")
+			 .done(function(resp){
+				 roominfo = resp;
+				 console.log(resp);
+				 $("#roomlk").val("http://"+location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
+				 CreateSocket(resp["token"]);
+			  });
+		}else{
+			$.get("./join", { "roomid": QueryString("roomid") },null,"json")
+			 .done(function(resp){
+				 roominfo = resp;
+				 console.log(resp);
+				 $("#roomlk").val("http://"+ location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
+				 CreateSocket(resp["token"]);
+			  });
+		}
+		
+		$("#pushup").bind("click",function(){
+			$.get("./push",{"roomid":roominfo["roomid"] });
+		});
+	});
+	
+  </script>
+  <div>Room Link <input id="roomlk" type="text" style="width:400px;" /></div>
+  <button id="pushup">+1</button>
+  <div id="users">
+  		
+  </div>
+  
+</body>
+</html>

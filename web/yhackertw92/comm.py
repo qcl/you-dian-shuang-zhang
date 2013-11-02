@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 import webapp2
+import logging
 from google.appengine.api import channel
 from gaesessions import get_current_session
 from google.appengine.api import memcache
@@ -62,19 +63,28 @@ class CommJoinHandler(webapp2.RequestHandler):
         session = get_current_session()
         #error check
         if session.has_key('user') == False:
+            logging.error("Login Please")
             self.response.write("{\"error\":\"login please\"}")
+            return
 
         roomid   = self.request.get('roomid')
         myuser   = session["user"]
         roominfo = json.loads(memcache.get(key="room["+ roomid +"]"))
 
+        needupdate = True
         for inuser in roominfo["users"]:
             if inuser['id'] == myuser['id']:
-                self.response.write("{\"error\":\"You have in this room.\"}")
-                return
+                #self.response.write("{\"error\":\"You have in this room.\"}")
+                needupdate = False
+                break
 
-        roominfo["users"].append(myuser) 
-
+         
+        logging.info(json.dumps(roominfo))
+        if needupdate==True:
+            roominfo["users"].append(myuser) 
+            memcache.set(key="room["+ roomid +"]" , value=json.dumps(roominfo), time=86400)
+        
+        logging.info(json.dumps(roominfo))
         #push data
         data = {
             "from": myuser,
@@ -99,10 +109,10 @@ class CommCounterHandler(webapp2.RequestHandler):
         else:
             session["room["+ roomid +"]"] = 1
         
-
+        myuser  = session['user']
         #push data
         output = {
-            "from": None,
+            "from": myuser,
             "count": session["room["+ roomid +"]"],
             "method": "incr"
         }

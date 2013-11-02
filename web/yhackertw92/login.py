@@ -36,7 +36,7 @@ class LoginHandler(webapp2.RequestHandler):
         
          
         fblogin = ("https://www.facebook.com/dialog/oauth?client_id="+FacebookOauth["appId"] + "&"+
-        "redirect_uri="+"http://localhost:8080/callback"+
+        "redirect_uri="+"http://yhackertw92.appspot.com/callback"+
         "&scope=publish_stream,email")
 
         self.redirect(fblogin)
@@ -51,7 +51,7 @@ class CallbackHandler(webapp2.RequestHandler):
         code = self.request.get('code')
         
         fboauth = ("https://graph.facebook.com/oauth/access_token?client_id="+FacebookOauth["appId"]+ "&"+
-                   "redirect_uri=http://localhost:8080/callback&"+
+                   "redirect_uri=http://yhackertw92.appspot.com/callback&"+
                    "client_secret="+FacebookOauth["secret"] +"&"+
                    "code="+code)
         result = urlfetch.fetch(fboauth)
@@ -60,7 +60,7 @@ class CallbackHandler(webapp2.RequestHandler):
         userObj = urlfetch.fetch("https://graph.facebook.com/me?fields=id,name&"+token)
         userObj = userObj.content
         userObj = json.loads(userObj)
-        session['user'] =  {"id": str(userObj['id']), "name": str(userObj['name'])}
+        session['user'] =  {"id": str(unicode(userObj['id'])), "name": userObj["name"].encode('utf-8') }
 
         
         self.redirect(session['tourl'])
