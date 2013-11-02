@@ -27,7 +27,11 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render())
+        innerHTML = template.render()
+        session = get_current_session()
+        if session.has_key('user')==False:
+            pass
+        self.response.write(innerHTML)
         '''
         self.response.write('<div>Hello world!</div>')
         session = get_current_session()
