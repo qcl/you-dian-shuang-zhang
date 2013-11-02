@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, max-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta property="og:title" content="油電雙掌"/>
 <meta property="og:description" content="油電雙掌，真不簡單，強身健體，共體時艱"/>
 <meta property="og:url" content="http://yhackertw92.appspot.com/testsocket.html"/>
@@ -48,10 +48,11 @@
 			if(data["from"]["id"]==roominfo["current"]["id"] && data["count"]>=roominfo["criteria"]){
 				
 				$(".touchCover").animate({"top": 60 },1200);
-				$(".touchCover").html("<h1 style='font-size:100px;color:#FFF;padding-top:80px;'>End</h1>");
+				$(".touchCover").html("<h1 style='font-size:100px;color:#FFF;padding-top:80px;margin-bottom:0px;margin-top:0px; '>End</h1>");
 				$(".touchCover").removeClass("hkbg_purple");
 				$(".touchCover").addClass("hkbg_blue");
-				$(".touchCover").append("<div id='board' style='font-size:20px;color:#FFF;padding-top:80px; margin-bottom:10px; border-bottom:3px dashed #FFF;'></div>");
+				$(".touchCover").append("<div id='back'><a style='font-size:30px;color:#FFF;padding-top:80px; border-bottom:3px dashed #FFF;' href='./'>主頁面</a></div>");
+				$(".touchCover").append("<div id='board' style='font-size:20px;color:#FFF;padding-top:80px; border-bottom:3px dashed #FFF;'></div>");
 				roominfo["et"] = new Date();
 				$.map(roominfo["users"],function(item){
 					
@@ -122,6 +123,15 @@
 			 $("#roomlk").val("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]);
 			 $("#fbshare").attr("src","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]));
 			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
+			 
+			 if(QueryString("num")){
+				LoadSingleVersion();
+				roominfo["criteria"] = parseInt(QueryString("num"));
+	  		 }else{
+	  			LoadNetworkVersion();
+				roominfo["criteria"] = 30;
+	  		 }
+			 
 			 CreateSocket(resp["token"]);
 		  });
 		
@@ -171,8 +181,12 @@
   <script type="text/javascript">
   
   var TestCase = function(){
-	  LoadNetworkVersion();
-	  //LoadSingleVersion();
+	  if(QueryString("num")){
+		LoadSingleVersion()
+	  }else{
+	  	LoadNetworkVersion();
+	  }
+	  //;
   }
   
   function LoadNetworkVersion(){ //載入要參戰的清單
@@ -193,7 +207,7 @@
 		  	  $("#readyban button").hide();
 		      $("#touchboard").show();
 			  
-			  roominfo["criteria"] = 30;
+			  
 			  roominfo["st"] = new Date();
 			  setTimeout(function(){ $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
 		  });
@@ -210,16 +224,14 @@
 		  	  $(".touchList").hide();
 		  	  $("#readyban button").hide();
 		      $("#touchboard").show();
-			  
-			  roominfo["criteria"] = 30;
 			  setTimeout(function(){ $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
 	   });
 		  
-	   $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>你這次目標是30下Push Up<br/><br/></h2><h1 style='font-size:100px'>否則付$0.99</h1>")
+	   $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>你這次目標是"+QueryString("num")+"下Push Up<br/><br/></h2><h1 style='font-size:100px'>否則付$0.99</h1>")
 	  
   }
   
-  TestCase();
+  //TestCase();
  
   function ControlFadeIn(){
 	  var $touchControl = $(".touchControl");
