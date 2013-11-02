@@ -13,9 +13,53 @@
 <style>
 
 .touchArea{
-    background: red;
+    position: relative; 
+    background-color: transparent;
+    width: 300px;
+    height: 300px;
+}
+
+.ring{
     width: 100px;
     height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top:92px;
+    left:92px;
+    background-color: transparent;
+    border: 8px gray solid;
+    -webkit-animation-name: ani; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-play-state: paused;
+}
+
+.delay{
+    -webkit-animation-delay: 0.3s;
+}
+
+@-webkit-keyframes ani {
+    0% {-webkit-transform: scale(1); opacity: 1; border: 7px red solid;}
+    100% {-webkit-transform: scale(3); opacity: 0;} 
+}
+
+#counter{
+    z-index: 10;
+    position: relative;
+    top: 100px;
+    font-size: 100px;
+}
+
+#innerR{
+    z-index: 8;
+    position: absolute;
+    top:50px;
+    left:50px;
+    width: 200px;
+    height: 200px;
+    background: red;
+    border-radius: 50%;
 }
 
 #player{
@@ -26,13 +70,20 @@
     /* display: none; */
 }
 
+.hide{
+    display:none;
+}
+
 </style>
 </head>
 <body>
 <h1>Push Up</h1>
 <center>
-<h2 id="counter">0</h2>
 <div class="touchArea">
+    <span id="counter">0</span>
+    <div id="innerR"></div>
+    <div id="r1" class="ring" ></div>
+    <div id="r2" class="ring"></div>
 </div>
 </center>
 <audio id="player" preload="auto" controls>
@@ -49,7 +100,8 @@ $(function(){
     var $counter = $("#counter");
     var $touchArea = $(".touchArea");
     var player = $("#player")[0];
-
+    var panddingAni1 = 0;
+    var panddingAni2 = 0;
 
     $touchArea.click(function(){
         count++;
@@ -58,18 +110,49 @@ $(function(){
         speaker.numberQueue = [count];
         speaker.play();
 
+        $("#r1").css("-webkit-animation-play-state","running");
+        $("#r1").removeClass("hide");
+
+        panddingAni1++;
+        setTimeout(function(){
+            panddingAni1--;
+            if(panddingAni1==0){
+                $("#r1").css("-webkit-animation-play-state","paused");
+                $("#r1").addClass("hide");
+            }
+        },1000);
+        setTimeout(function(){
+            panddingAni2++;
+            $("#r2").css("-webkit-animation-play-state","running");
+            $("#r2").removeClass("hide");
+            setTimeout(function(){
+                panddingAni2--;
+                if(panddingAni2==0){
+                    $("#r2").css("-webkit-animation-play-state","paused");
+                    $("#r2").addClass("hide");
+                }
+            },1000);
+        },100);
+
         //player.play();
+    });
+
+    
+    $touchArea.mouseup(function(){
+        console.log("up");
+    });
+
+    $touchArea.mousedown(function(){
+        console.log("down");
     });
 
     player.src="./audio/wtf.mp3";
     //player.src="./audio/wtf2.mp3";
     //$touchArea.trigger('click'); 
 
-    speaker.load();
-    speaker.numberQueue = [3, 2, 1, "thank"];
-    speaker.play();
+    //speaker.numberQueue = [3, 2, 1, "thank"];
+    //speaker.play();
 
-    //window.speaker = new BumblerSpeech("#ma-speech");
 
 });
 </script>
