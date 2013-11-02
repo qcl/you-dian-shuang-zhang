@@ -9,8 +9,22 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /login
+  script: login.app
+
+- url: /callback
+  script: login.app
+
+- url: /user
+  script: login.app
+
+
+- url: /test
+  script: login.app
+
 - url: .*
   script: main.app
+
 
 libraries:
 - name: webapp2
