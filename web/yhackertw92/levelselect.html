@@ -68,6 +68,7 @@ body{
     font-size: 25px;
     padding: 10px;
     margin: 0px;
+    width: 50%;
 }
 
 </style>
@@ -127,7 +128,7 @@ $(function(){
         if($("target").val()!=""){
             var target = parseInt($("#target").val());
             //TODO redirect, the number user input is `target'.
-			location.href="./testsocket.html?num="+target;
+			location.href= "./testsocket.html?num="+ target;
         }
     });
 

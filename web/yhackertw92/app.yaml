@@ -13,6 +13,10 @@ handlers:
   static_files: testsocket.html
   upload: testsocket\.html
 
+- url: /levelselect\.html
+  static_files: levelselect.html
+  upload: levelselect\.html
+
 - url: /css
   static_dir: css 
 - url: /img
