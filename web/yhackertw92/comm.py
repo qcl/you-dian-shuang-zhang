@@ -102,6 +102,30 @@ class CommJoinHandler(webapp2.RequestHandler):
         roominfo["current"] = myuser
         self.response.write(json.dumps(roominfo))
 
+class CommStartHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.headers['Content-Type'] = 'text/html;charset=utf-8'
+        roomid  = self.request.get('roomid')
+
+        session = get_current_session()
+            
+        if session.has_key("user")==False:
+            self.response.write("{\"status\":false }")
+        
+        roominfo = json.loads(memcache.get(key="room["+ roomid +"]"))
+        myuser  = session['user']
+        
+        if roominfo["users"][0]["id"] != myuser["id"]:
+            return
+        output = {
+            "from": myuser,
+            "method": "start"
+        }
+
+        channel.send_message(roomid, json.dumps(output))
+        
+
+
 class CommCounterHandler(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html;charset=utf-8'
@@ -182,6 +206,7 @@ app = webapp2.WSGIApplication([
     ('/create', CommCreateHandler),
     ('/join', CommJoinHandler),
     ('/push', CommCounterHandler),
+    ('/start', CommStartHandler),
     ('/board', CommBoardHandler)
 ], debug=True)
 

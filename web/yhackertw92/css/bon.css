@@ -50,6 +50,23 @@ body{
 	display:inline-block;
 	margin:5px;
 }
+#board{
+	line-height:40px;
+	font-size:30px;
+}
+#board img{
+	vertical-align:middle;
+	width:50px;
+	margin-right:10px;
+}
+#board span{
+	background-color:#F00;
+	color:#FFF;
+	padding:5px;
+	display:inline-block;
+	margin-left:5px;
+	line-height:20px;
+}
 
 #readyban{
 	position:fixed;

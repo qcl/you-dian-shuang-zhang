@@ -2,6 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, max-scale=1.0">
+<meta property="og:title" content="油電雙掌"/>
+<meta property="og:description" content="油電雙掌，真不簡單，強身健體，共體時艱"/>
+<meta property="og:url" content="http://yhackertw92.appspot.com/testsocket.html"/>
 <title>Test Socket</title>
 <link rel="stylesheet" href="./css/bon.css">
 <script type="text/javascript" src="./js/jquery-2.0.3.min.js"></script>
@@ -47,7 +51,7 @@
 				$(".touchCover").html("<h1 style='font-size:100px;color:#FFF;padding-top:80px;'>End</h1>");
 				$(".touchCover").removeClass("hkbg_purple");
 				$(".touchCover").addClass("hkbg_blue");
-				$(".touchCover").append("<div id='board' style='font-size:20px;color:#FFF;padding-top:80px;'></div>");
+				$(".touchCover").append("<div id='board' style='font-size:20px;color:#FFF;padding-top:80px; margin-bottom:10px; border-bottom:3px dashed #FFF;'></div>");
 				roominfo["et"] = new Date();
 				$.map(roominfo["users"],function(item){
 					
@@ -75,6 +79,8 @@
 				}
 			});
 			
+		}else if(data["method"]=="start"){
+			$("#readyban button").trigger("start");
 		};
 	}
 	function QueryString(name) {
@@ -114,6 +120,7 @@
 			 roominfo = resp;
 			 console.log(resp);
 			 $("#roomlk").val("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]);
+			 $("#fbshare").attr("src","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]));
 			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
 			 CreateSocket(resp["token"]);
 		  });
@@ -133,7 +140,9 @@
   <!-- 使用者清單 -->
   <div class="touchList hk_cover hkbg_white" >
   		<div style=" position:relative; height:100%;padding-top:20px;">
-        	<div style="text-align:center;"><span style="color:#000; font-size:30px;">Room Link:</span><br/><input id="roomlk" type="text" style="width:350px;padding:5px;" /></div>
+        	<div style="text-align:center;">
+            	<span style="color:#000; font-size:30px;">Room Link:<a id="fbshare" href=""><img style="width:30px; margin-left:20px;" src="./img/facebook_icon.png"/></a></span><br/>
+            	<input id="roomlk" type="text" style="width:350px;padding:5px;" /></div>
   			<div id="users"></div>
         </div>
   </div>
@@ -172,6 +181,10 @@
    	  $(".touchList").animate({"top":60},1000);
 	  //封盤準備開始
 	  $("#readyban button").click(function(){
+		  $.get("./start",{"roomid":roominfo["roomid"] });
+		  
+	  }).bind("start",function(){
+		  $(this).unbind("start");
 		  $(this).data("flag", true);
 		  
 		  $("#readyban").animate({"height": $(window).height()-60 },1000,function(){
@@ -186,7 +199,6 @@
 		  });
 		  
 		  $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>十秒鐘後開始<br/>先做完扶立挺身<br/>三十下者<br/><br/></h2><h1 style='font-size:100px'>勝</h1>");
-		  
 	  });
   };
   

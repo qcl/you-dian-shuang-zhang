@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+
 #
 # Copyright 2007 Google Inc.
 #
@@ -34,6 +36,7 @@ class MainHandler(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('user.html')
             myuser = session["user"]
             template_values = myuser
+            template_values["name"] =myuser["name"].decode("utf-8")
             innerHTML = template.render(template_values)
         self.response.write(innerHTML)
         '''

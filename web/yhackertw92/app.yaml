@@ -46,6 +46,9 @@ handlers:
 - url: /board
   script: comm.app
 
+- url: /start
+  script: comm.app
+
 - url: .*
   script: main.app
 
