@@ -15,10 +15,15 @@
 # limitations under the License.
 #
 import webapp2
+from gaesessions import get_current_session
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        self.response.write('<div>Hello world!</div>')
+        session = get_current_session()
+        if session.has_key('user')==False:
+            self.response.write('<div><a href="./login">Facebook Login</div>')
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
