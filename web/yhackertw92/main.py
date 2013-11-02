@@ -31,7 +31,7 @@ class MainHandler(webapp2.RequestHandler):
             template = JINJA_ENVIRONMENT.get_template('index.html')
             innerHTML = template.render()
         else:
-            template = JINJA_ENVIRONMENT.get_template('sampleuser.html')
+            template = JINJA_ENVIRONMENT.get_template('user.html')
             myuser = session["user"]
             template_values = myuser
             innerHTML = template.render(template_values)
