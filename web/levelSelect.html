@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+<title>油電雙掌</title>
+
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js" /></script>
+<style>
+body{
+    background: black;
+}
+
+.footer{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    height: 0%;
+    width: 100%;
+    background: #776d67;
+    z-index: 5;
+}
+
+#hands{
+    position: absolute;
+    top: 100px;
+    left: 0px;
+}
+
+.hide{
+    display:none;
+}
+
+.userHead{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline;
+    position: absolute;
+    top:5px;
+    left: 5px;
+}
+
+.mission{
+    width: 100%;
+    background: #56bdeb;
+    position: relative;
+    height: 60px;
+    margin-bottom: 10px;
+    vertical-align:middle;
+}
+#userpage{
+    width:100%;
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+#submit{
+    border: none;
+    font-size: 25px;
+    padding: 10px;
+    margin: 0px;
+}
+
+#target{
+    border: none;
+    font-size: 25px;
+    padding: 10px;
+    margin: 0px;
+}
+
+</style>
+</head>
+<body>
+<div id="userpage">
+    <div id="user_header" style="position:relative;height:50px;">
+        <img src="./img/user.jpg" class="userHead" />
+        <span style="color:#FFF;font-size:25px;position:absolute;top:10px;left:60px;">Qing-Cheng Li</span>
+    </div>
+    <div id="dummy" style="width:100%;">
+    </div>
+    <div>
+        <div id="start" class="mission">
+            <center style="padding-top:10px;">
+                <img src="./img/start.png" style="vertical-align:middle"/>
+                <span style="color:white;line-height:41px;font-size:30px;vertical-align:middle;" >設 定 目 標</span>
+            </center>
+        </div>
+        <center style="margin-top: 30px;">
+            <input type="number" id="target"/><input id="submit" type="submit" value="確認" />
+        </center>
+    </div>
+</div>
+<script>
+
+$(function(){
+    
+    $("#dummy").height($(window).height());
+    $("#userpage").height($(window).height());
+
+    var showTimeFast = 500;
+
+    $("#dummy").animate({
+        height: "100px"
+    },showTimeFast);
+
+    var prevN = 0;
+
+    $("#target").on("keyup",function(){
+        if($("#target").val()!=""){
+            var s = parseInt($("#target").val());
+        
+            if(isNaN(s)||s<0){
+                console.log("Nooo");
+                $("#target").val(prevN);
+            }else{
+                prevN = s;
+                console.log(s);
+            }
+        }else{
+            $("#target").val("");
+        }
+    });
+
+    $("#submit").click(function(){
+        if($("target").val()!=""){
+            var target = parseInt($("#target").val());
+            //TODO redirect, the number user input is `target'.
+        }
+    });
+
+});
+
+</script>
+</body>
+</html>
