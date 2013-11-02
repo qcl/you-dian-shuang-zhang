@@ -126,7 +126,7 @@
     		$(document).dequeue("myAnimation");
       };
 	  var funlist =[
-	  	function() {  $touchControl.animate({"width":"50%"},200, aniCB);    },
+	  	function() {  $("button",$(".touchCover")).fadeOut(300);  $touchControl.animate({"width":"50%"},200, aniCB);    },
 		function() {  $touchControl.prepend("<button class='leavebtn'>離開</button>");  
 					  $("button.leavebtn",$touchControl).css({"width":$(window).width()*0.49,"opacity": 0,"display":"inline-block" });
 					  $("button.leavebtn",$touchControl).animate({"opacity":1},800,aniCB);
@@ -154,9 +154,10 @@
 		function() { $("button.leavebtn",$touchControl).animate({"opacity": 0},600, aniCB); },
 		function() { $("button.leavebtn",$touchControl).remove(); $touchControl.animate({"width":"0%"},300,aniCB);  },
 	  	function() {
-			console.log(css);
 			if(css=="leavebtn"){
 				$("button",$(".touchCover")).fadeOut(300,aniCB);
+			}else{
+				$("button",$(".touchCover")).fadeIn(200);
 			}
 		},
 		function() { $(".touchCover").animate({"top": 60 },1200,aniCB); },
