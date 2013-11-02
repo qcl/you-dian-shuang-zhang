@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+<title>油電雙掌</title>
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js" /></script>
+<style>
+body{
+    background: black;
+}
+
+.footer{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    height: 18%;
+    width: 100%;
+    background: #56bdeb;
+}
+
+#hands{
+    position: absolute;
+    top: 50px;
+    left: 0px;
+}
+</style>
+</head>
+<body>
+
+<center>
+<img style="margin-top:100px;width:50%;" src="./img/yd.png" />
+<div id="dummy" style="width:100%; height: 80px;"></div>
+<div style="position: relative;">
+    <img id="sz" style="width:50%;" src="./img/sz.png" />
+    <img id="hands" src="./img/hands.png" width="100%" />
+</div>
+</center>
+
+<div class="footer">
+</div>
+
+<script>
+
+$(function(){
+
+    $("#dummy").height($(window).height()).animate({
+        height:"0px"
+    },2000);
+    
+    /*
+    $("#hands").animate({
+        bottom: "15%",
+        left: "0px"
+    },2000);
+    */
+    /*
+    $("#sz").animate({
+        bottom: "50%"
+    },2000);
+    */
+});
+
+</script>
+</body>
+</html>
