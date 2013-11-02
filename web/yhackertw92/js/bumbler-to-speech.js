@@ -6,6 +6,10 @@
   };
 
   AUDIO_MAP = {
+    init: {
+        start: 0.0,
+        duration: 0.1
+    },
     d1: {
       start: 0.45,
       duration: 0.5
@@ -182,6 +186,7 @@
       if (number === "thank") {
         return ["thank"];
       }
+      if (number === "init"){ return ["init"]; }
       if (number === "prepare"){ return ["prepare"]; }
       if (number === "please"){ return ["please"]; }
       if (number === "no"){ return ["no"]; }
