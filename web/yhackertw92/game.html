@@ -159,7 +159,7 @@
 					roominfo["criteria"] = parseInt(QueryString("num"));
 				 }else{
 					LoadNetworkVersion();
-					roominfo["criteria"] = 30;
+					roominfo["criteria"] = 10;
 				 }
 				 
 				 CreateSocket(resp["token"]);
@@ -250,7 +250,7 @@
 			  setTimeout(function(){ $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
 		  });
 		  
-		  $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>十秒鐘後開始<br/>先做完扶立挺身<br/>三十下者<br/><br/></h2><h1 style='font-size:100px'>勝</h1>");
+		  $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>十秒鐘後開始<br/>先做完扶立挺身<br/>十下者<br/><br/></h2><h1 style='font-size:100px'>勝</h1>");
 	  });
   };
   
