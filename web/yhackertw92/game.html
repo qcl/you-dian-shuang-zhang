@@ -50,8 +50,11 @@
 			};
 			
 			if(data["from"]["id"]==roominfo["current"]["id"] && data["count"]>=roominfo["criteria"]){
-				
-				speaker.numberQueue = ["wewin","wewin","wewin"];
+				if(QueryString("num")){
+					speaker.numberQueue = ["milestone"];
+				}else{
+					speaker.numberQueue = ["wewin","wewin","wewin"];
+				}
 				speaker.play();
 				
 				$(".touchCover").animate({"top": 60 },1200);
@@ -198,9 +201,9 @@
     		<div id="r2" class="ring"></div>
 		</div>
    	</center>
-   	<audio id="player" preload="auto" controls>
+   	<audio id="player" style="position:absolute; left:-100000px;" preload="auto" controls>
    	</audio>
-   	<audio id="ma-speech" preload="auto" controls>
+   	<audio id="ma-speech" style="position:absolute; left:-100000px;" preload="auto" controls>
     	<source src="./audio/one-to-ten.mp3" type="audio/mpeg" />
    	</audio>
   </div>
@@ -256,7 +259,7 @@
 			  setTimeout(function(){  $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
 	   });
 		  
-	   $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>你這次目標是"+QueryString("num")+"下Push Up<br/><br/></h2><h1 style='font-size:100px'>否則付$0.99</h1>")
+	   $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>你這次目標是<span class='font-size:80px'>"+QueryString("num")+"</span>下Push Up<br/><br/></h2><h1 style='font-size:100px'></h1>")
 	  
   }
   
