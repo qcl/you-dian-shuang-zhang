@@ -173,8 +173,14 @@
 				 CreateSocket(resp["token"]);
 			 }catch(ex){
 				 alert("系統因素, 請重新登入");
-				 location.href= "./";
+				 //location.href= "./login";
+				 if(QueryString("roomid")!=null)
+				 	location.href= "./login?to="+ encodeURIComponent("https://"+ location.host + "/game.html?roomid=" + QueryString("roomid"));
+				 else
+				 	location.href= "./login";
 			 }
+		  }).error(function(){
+			  location.href= "./login";
 		  });
 		
 		$("#pushup").bind("click",function(){

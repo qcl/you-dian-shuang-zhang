@@ -18,6 +18,7 @@
 import webapp2
 from google.appengine.api import urlfetch
 from gaesessions import get_current_session
+import logging
 try:
     import simplejson as json
 except:
@@ -37,7 +38,8 @@ class LoginHandler(webapp2.RequestHandler):
         tourl = self.request.get('to')
         if tourl is '':
             tourl = '/'
-        get_current_session()['tourl'] = tourl
+        logging.info(tourl)
+        get_current_session()['tourl'] = str(tourl)
         
          
         fblogin = ("https://www.facebook.com/dialog/oauth?client_id="+FacebookOauth["appId"] + "&"+
