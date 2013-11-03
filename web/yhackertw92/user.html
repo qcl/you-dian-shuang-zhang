@@ -206,26 +206,32 @@ $(function(){
     $("#networkadd").click(function(){
 
         var roomId = prompt("請輸入Game Room ID:");
-
-        $("#bg").removeClass("hide");
-        $("#bna").removeClass("hide").css("margin-top","180px");
-
-        $("#bgdummy").animate({
-            height: 0
-        },showTimeFast,function(){
-            $("#bgdummy").remove();
-        });
-
-        $("#bna").animate({
-            height: $(window).height(),
-            "margin-top": 0
-        },showTimeFast,function(){
-            $("#bn").remove();
-            $("#bs").remove();
-            $("#bh").remove();
-
-            ani("./img/network_word.png","./game.html?roomid="+roomId);
-        });
+		console.log(roomId);
+		if(roomId =='' || roomId ==null){
+			location.href ="./";
+			return;
+		}
+		setTimeout(function(){ 
+			$("#bg").removeClass("hide");
+			$("#bna").removeClass("hide").css("margin-top","180px");
+	
+			$("#bgdummy").animate({
+				height: 0
+			},showTimeFast,function(){
+				$("#bgdummy").remove();
+			});
+	
+			$("#bna").animate({
+				height: $(window).height(),
+				"margin-top": 0
+			},showTimeFast,function(){
+				$("#bn").remove();
+				$("#bs").remove();
+				$("#bh").remove();
+	
+				ani("./img/network_word.png","./game.html?roomid="+roomId);
+			});
+		},800);
     });
 	
 	function formDateTime(item_time){

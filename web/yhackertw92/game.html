@@ -221,6 +221,11 @@
   
   var TestCase = function(){
 	  if(QueryString("num")){
+		if(isNaN(QueryString("num"))==true){
+			alert("你輸入的不是數字, 請重新再來");
+			location.href="./";
+			return;
+		}
 		LoadSingleVersion()
 	  }else{
 	  	LoadNetworkVersion();
