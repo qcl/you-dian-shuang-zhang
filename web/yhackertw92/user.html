@@ -69,7 +69,21 @@ body{
     top:0;
     left:0;
 }
-
+ul{
+	list-style:none;
+	margin-top:30px;
+}
+ li{
+	list-style:none;
+	font-size:10px;
+	padding:10px;
+	color:#FFF;
+	border-bottom:3px dashed #CCC;
+	line-height:40px;
+}
+ li span.first-child{
+	 min-width:100px;
+ }
 </style>
 </head>
 <body>
@@ -213,7 +227,15 @@ $(function(){
             ani("./img/network_word.png","./game.html?roomid="+roomId);
         });
     });
-
+	
+	function formDateTime(item_time){
+		var str = item_time.getFullYear() + '-' + (item_time.getMonth() + 1) + '-' + item_time.getDate() + ' ';
+			str += (item_time.getHours() < 10 ? ("0" + item_time.getHours()) : item_time.getHours()) + ":";
+			str += (item_time.getMinutes() < 10 ? ("0" + item_time.getMinutes()) : item_time.getMinutes()) + ":";
+			str += (item_time.getSeconds() < 10 ? ("0" + item_time.getSeconds()) : item_time.getSeconds());
+		return str;
+	};
+	
     $("#history").click(function(){
         $("#bg").removeClass("hide");
         $("#bh").removeClass("hide").css("margin-top","270px");
@@ -233,10 +255,34 @@ $(function(){
             $("#bna").remove();
 
             //TODO history
+			$.get("./board",null,null,"json")
+			 .done(function(resp){
+				 var $ul = $("<ul>");
+				 var $li = $("<li><span style='display:inline-block;margin-right:20px;color:#FF0;font-size:28px;'>"+"次數"+"</span><span style='color:#FF0;'>"+ "時間" +"</span></li>");
+					 $ul.append($li)
+				 $.map(resp,function(elem){
+					 var $li = $("<li><span style='display:inline-block;margin-right:20px;font-size:28px;'>"+elem["score"]+"</span><span >"+ formDateTime(new Date(parseInt(elem["time"])*1000))  +"</span></li>");
+					 $ul.append($li)
+			     });
+				 
+				 $("#bh").html($ul);
+				 $("#bh").append("<div style='padding-top:50px; text-align:center;'><a style='font-size:25px;color:#FFF;' href='./'>主畫面</a></div>");
+				 
+		    });
         });
     });
 
 });
+
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-45369609-2', 'yhackertw92.appspot.com');
+  ga('send', 'pageview');
 
 </script>
 </body>

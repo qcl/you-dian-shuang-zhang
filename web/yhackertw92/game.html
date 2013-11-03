@@ -51,6 +51,9 @@
 			
 			if(data["from"]["id"]==roominfo["current"]["id"] && data["count"]>=roominfo["criteria"]){
 				
+				speaker.numberQueue = ["wewin","wewin","wewin"];
+				speaker.play();
+				
 				$(".touchCover").animate({"top": 60 },1200);
 				$(".touchCover").html("<h1 style='font-size:100px;color:#FFF;padding-top:80px;margin-bottom:0px;margin-top:0px; '>End</h1>");
 				$(".touchCover").removeClass("hkbg_purple");
@@ -90,6 +93,7 @@
 			
 		}else if(data["method"]=="start"){
 			$("#readyban button").trigger("start");
+			
 		};
 	}
 	function QueryString(name) {
@@ -248,7 +252,8 @@
 		  	  $(".touchList").hide();
 		  	  $("#readyban button").hide();
 		      $("#touchboard").show();
-			  setTimeout(function(){ $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
+			  
+			  setTimeout(function(){  $("#readyban").css("top",60).animate({"top": $(window).height() },2000,function(){   $(this).remove();  }); },2000);
 	   });
 		  
 	   $("#readyban").html("<h2 style='padding-top:100px; line-height:60px;'>你這次目標是"+QueryString("num")+"下Push Up<br/><br/></h2><h1 style='font-size:100px'>否則付$0.99</h1>")
@@ -274,7 +279,14 @@
 					  $("button.contbtn",$touchControl).css({"width":$(window).width()*0.49,"opacity": 0,"display":"inline-block" }); 
 					  $("button.contbtn",$touchControl).animate({"opacity":1},800,aniCB);
 					  },
-		function() {  $("button",$touchControl).click(function(){ ControlFadeOut($(this).attr("class"));  }); }
+		function() {  $("button",$touchControl).click(function(){ 
+			ControlFadeOut($(this).attr("class"));  
+			if($(this).attr("class")=="leavebtn"){
+				
+				
+			}
+		}); 
+		}
 	  ];
 	  $(document).queue("myAnimation", funlist);
 	  aniCB();
@@ -294,6 +306,8 @@
 	  	function() {
 			if(css=="leavebtn"){
 				$("button",$(".touchCover")).fadeOut(300,aniCB);
+				speaker.numberQueue = ["please","notgood"];
+				speaker.play();
 			}else{
 				$("button",$(".touchCover")).fadeIn(200);
 			}
@@ -302,7 +316,8 @@
 		function() { $(".touchCover").data("flag",null);
 					 $(".touchCover").removeClass("hkbg_purple");
 					 $(".touchCover").addClass("hkbg_blue"); 
-					 $(".touchCover").html("<h1 style='font-size:100px;color:#FFF;padding-top:80px;'>嗨肉腳你好啊</h1>");
+					 $(".touchCover").html("<h1 style='font-size:80px;color:#FFF;padding-top:80px;'>拜託喔,<br/>非常不滿意</h1>");
+					 $(".touchCover").append("<div id='back'><a style='font-size:30px;color:#FFF;padding-top:80px; border-bottom:3px dashed #FFF;' href='./'>主頁面</a></div>");
 					 //TODO 跳回設定頁
 					 
 		}
@@ -350,6 +365,13 @@
   
   	  $touchArea.click(function(){
 		  
+		  if($("span",$counter).size()>0){
+			  $counter.html(0);
+			  speaker.numberQueue = ["init","init","start"];
+			  speaker.play();
+			  return;
+		  }
+		  
 		  $("#pushup").trigger("push");
 		  
 		  count++;
@@ -393,6 +415,15 @@
 	  //speaker.play();
   });
   </script>
-  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-45369609-2', 'yhackertw92.appspot.com');
+  ga('send', 'pageview');
+
+</script>
 </body>
 </html>
