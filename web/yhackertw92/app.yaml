@@ -9,9 +9,9 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /testsocket\.html
-  static_files: testsocket.html
-  upload: testsocket\.html
+- url: /game\.html
+  static_files: game.html
+  upload: game\.html
 
 - url: /levelselect\.html
   static_files: levelselect.html

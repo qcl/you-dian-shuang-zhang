@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta property="og:title" content="油電雙掌"/>
 <meta property="og:description" content="油電雙掌，真不簡單，強身健體，共體時艱"/>
-<meta property="og:url" content="http://yhackertw92.appspot.com/testsocket.html"/>
+<meta property="og:url" content="http://yhackertw92.appspot.com/game.html"/>
 <title>Test Socket</title>
 <link rel="stylesheet" href="./css/bon.css">
 <script type="text/javascript" src="./js/jquery-2.0.3.min.js"></script>
@@ -45,6 +45,10 @@
 			
 		}else if(data["method"]=="incr"){
 			//設定終止條件
+			if(data["from"]["id"]==roominfo["current"]["id"]){
+				count = data["count"];
+			};
+			
 			if(data["from"]["id"]==roominfo["current"]["id"] && data["count"]>=roominfo["criteria"]){
 				
 				$(".touchCover").animate({"top": 60 },1200);
@@ -135,9 +139,10 @@
 		 .done(function(resp){
 			 roominfo = resp;
 			 console.log(resp);
-			 $("#roomlk").val("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]);
-			 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/testsocket.html?roomid=" + resp["roomid"]));
+			 $("#roomlk").val("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]);
+			 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]));
 			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
+			 $(".roomcode").html(resp["roomid"]);
 			 
 			 if(QueryString("num")){
 				LoadSingleVersion();
@@ -166,8 +171,7 @@
   <div class="touchList hk_cover hkbg_white" >
   		<div style=" position:relative; height:100%;padding-top:20px;">
         	<div style="text-align:center;">
-            	<span style="color:#000; font-size:30px;">Room Link:<a id="fbshare" target="_blank" href="">
-                	<img style="width:30px; margin-left:20px;" src="./img/facebook_icon.png"/></a>
+            	<span style="color:#000; font-size:30px;">Room ID:<span class='roomcode'></span><a id="fbshare" target="_blank" href=""><img style="width:30px; margin-left:20px;" src="./img/facebook_icon.png"/></a>
                 </span><br/>
             	<input id="roomlk" type="text" style="width:350px;padding:5px;" /></div>
   			<div id="users"></div>
@@ -309,10 +313,11 @@
   }
   
   
+  var count = 0;
   
   $(function(){
   
-	  var count = 0;
+	  
 	  var $counter = $("#counter");
 	  var $touchArea = $(".touchArea");
 	  var $touchCover = $(".touchCover");

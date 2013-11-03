@@ -76,7 +76,7 @@
 			 .done(function(resp){
 				 roominfo = resp;
 				 console.log(resp);
-				 $("#roomlk").val("http://"+location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
+				 $("#roomlk").val("http://"+location.hostname+"/game.html?roomid=" + resp["roomid"]);
 				 CreateSocket(resp["token"]);
 			  });
 		}else{
@@ -84,7 +84,7 @@
 			 .done(function(resp){
 				 roominfo = resp;
 				 console.log(resp);
-				 $("#roomlk").val("http://"+ location.hostname+"/testsocket.html?roomid=" + resp["roomid"]);
+				 $("#roomlk").val("http://"+ location.hostname+"/game.html?roomid=" + resp["roomid"]);
 				 CreateSocket(resp["token"]);
 			  });
 		}

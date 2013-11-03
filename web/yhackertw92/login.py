@@ -27,8 +27,8 @@ except:
 FacebookOauth = { 
     "appId":"542121675865178", 
     "secret":"8425163cf581ee8161f9487c490e7094",
-    #"redir": "http://yhackertw92.appspot.com/callback"
-    "redir": "http://localhost:8080/callback"
+    "redir": "http://yhackertw92.appspot.com/callback"
+    #"redir": "http://localhost:8080/callback"
 }
 
 class LoginHandler(webapp2.RequestHandler):
