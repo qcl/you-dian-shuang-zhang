@@ -153,9 +153,16 @@
 				 $("#roomlk").val("https://"+ location.host + "/game.html?roomid=" + resp["roomid"]);
 				 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("https://"+ location.host + "/game.html?roomid=" + resp["roomid"]));
 				 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
+				 
+				 $("#qr").attr("src", "http://chart.apis.google.com/chart?cht=qr&chl="+encodeURIComponent("https://"+ location.host + "/game.html?roomid=" + resp["roomid"]) +"&chs=120x120");
 				 $(".roomcode").html(resp["roomid"]);
 				 
 				 if(QueryString("num")){
+					if(isNaN(QueryString("num"))==true){
+						alert("你輸入的不是數字, 請重新再來");
+						location.href="./";
+						return;
+					}
 					LoadSingleVersion();
 					roominfo["criteria"] = parseInt(QueryString("num"));
 				 }else{
@@ -188,6 +195,7 @@
         	<div style="text-align:center;">
             	<span style="color:#000; font-size:30px;">Room ID:<span class='roomcode' style='color:#F00;'></span><a id="fbshare" target="_blank" href=""><img style="width:30px; margin-left:20px;" src="./img/facebook_icon.png"/></a>
                 </span><br/>
+                <img id="qr" /><br />
             	<input id="roomlk" type="text" style="width:350px;padding:5px;" /></div>
   			<div id="users"></div>
         </div>
