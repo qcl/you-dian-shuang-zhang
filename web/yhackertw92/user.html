@@ -260,7 +260,8 @@ $(function(){
 				 var $ul = $("<ul>");
 				 var $li = $("<li><span style='display:inline-block;margin-right:20px;color:#FF0;font-size:28px;'>"+"次數"+"</span><span style='color:#FF0;'>"+ "時間" +"</span></li>");
 					 $ul.append($li)
-				 $.map(resp,function(elem){
+				 $.map(resp,function(elem,i){
+					 if(i > 6) return;
 					 var $li = $("<li><span style='display:inline-block;margin-right:20px;font-size:28px;'>"+elem["score"]+"</span><span >"+ formDateTime(new Date(parseInt(elem["time"])*1000))  +"</span></li>");
 					 $ul.append($li)
 			     });

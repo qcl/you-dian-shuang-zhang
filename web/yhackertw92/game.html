@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <meta property="og:title" content="油電雙掌"/>
 <meta property="og:description" content="油電雙掌，真不簡單，強身健體，共體時艱"/>
-<meta property="og:url" content="http://yhackertw92.appspot.com/game.html"/>
-<meta property="og:image" content="http://yhackertw92.appspot.com/img/landing.png" />
+<meta property="og:url" content="https://yhackertw92.appspot.com/game.html"/>
+<meta property="og:image" content="https://yhackertw92.appspot.com/img/landing.png" />
 <meta property="og:type"  content="game" />
-<title>Test Socket</title>
+<title>油電雙掌</title>
 <link rel="stylesheet" href="./css/bon.css">
 <script type="text/javascript" src="./js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="./js/bumbler-to-speech.js" /></script>
@@ -146,22 +146,27 @@
 		
 		$.get(method, { "roomid": QueryString("roomid") },null,"json")
 		 .done(function(resp){
-			 roominfo = resp;
-			 console.log(resp);
-			 $("#roomlk").val("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]);
-			 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]));
-			 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
-			 $(".roomcode").html(resp["roomid"]);
-			 
-			 if(QueryString("num")){
-				LoadSingleVersion();
-				roominfo["criteria"] = parseInt(QueryString("num"));
-	  		 }else{
-	  			LoadNetworkVersion();
-				roominfo["criteria"] = 30;
-	  		 }
-			 
-			 CreateSocket(resp["token"]);
+			 try{
+				 roominfo = resp;
+				 console.log(resp);
+				 $("#roomlk").val("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]);
+				 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]));
+				 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
+				 $(".roomcode").html(resp["roomid"]);
+				 
+				 if(QueryString("num")){
+					LoadSingleVersion();
+					roominfo["criteria"] = parseInt(QueryString("num"));
+				 }else{
+					LoadNetworkVersion();
+					roominfo["criteria"] = 30;
+				 }
+				 
+				 CreateSocket(resp["token"]);
+			 }catch(ex){
+				 alert("系統因素, 請重新登入");
+				 location.href= "./";
+			 }
 		  });
 		
 		$("#pushup").bind("click",function(){

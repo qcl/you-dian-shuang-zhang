@@ -44,7 +44,7 @@ class CommCreateHandler(webapp2.RequestHandler):
         m        = hashlib.md5()
         m.update(str(unixtime))
         
-        roomid   = m.hexdigest()[0:11]
+        roomid   = m.hexdigest()[0:5]
         token    = channel.create_channel(roomid, duration_minutes=1440)
         
         myuser   = session['user']
