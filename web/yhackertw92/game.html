@@ -69,6 +69,7 @@
 				$.map(roominfo["users"],function(item){
 					
 					if(roominfo["current"]["id"]==item["id"]) return;
+					if(item["count"]==null) return;
 					var $div = $("<div><img src='https://graph.facebook.com/" + item["id"] + "/picture?width=80&height=80'/>" + item["name"] +"<span>" + item["count"] + "</span>" +"</div>").data("uid", item["id"]);
 					$("#board").append($div);
 					
@@ -149,8 +150,8 @@
 			 try{
 				 roominfo = resp;
 				 console.log(resp);
-				 $("#roomlk").val("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]);
-				 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("http://"+ location.host + "/game.html?roomid=" + resp["roomid"]));
+				 $("#roomlk").val("https://"+ location.host + "/game.html?roomid=" + resp["roomid"]);
+				 $("#fbshare").attr("href","https://www.facebook.com/sharer/sharer.php?u="+ encodeURIComponent("https://"+ location.host + "/game.html?roomid=" + resp["roomid"]));
 				 $("#headerbar").html("<img src='https://graph.facebook.com/"+ resp["current"]["id"] + "/picture'><span>" + resp["current"]["name"] +  "</span>");
 				 $(".roomcode").html(resp["roomid"]);
 				 
@@ -185,7 +186,7 @@
   <div class="touchList hk_cover hkbg_white" >
   		<div style=" position:relative; height:100%;padding-top:20px;">
         	<div style="text-align:center;">
-            	<span style="color:#000; font-size:30px;">Room ID:<span class='roomcode'></span><a id="fbshare" target="_blank" href=""><img style="width:30px; margin-left:20px;" src="./img/facebook_icon.png"/></a>
+            	<span style="color:#000; font-size:30px;">Room ID:<span class='roomcode' style='color:#F00;'></span><a id="fbshare" target="_blank" href=""><img style="width:30px; margin-left:20px;" src="./img/facebook_icon.png"/></a>
                 </span><br/>
             	<input id="roomlk" type="text" style="width:350px;padding:5px;" /></div>
   			<div id="users"></div>
