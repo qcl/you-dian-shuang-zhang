@@ -57,8 +57,7 @@
 				$.map(roominfo["users"],function(item){
 					
 					if(roominfo["current"]["id"]==item["id"]) return;
-					var $div = $("<div><img src='https://graph.facebook.com/" + item["id"] + "/picture?width=80&height=80'/>" + item["name"] +"<span></span>" +"</div>")
-								.data("uid", item["id"]);
+					var $div = $("<div><img src='https://graph.facebook.com/" + item["id"] + "/picture?width=80&height=80'/>" + item["name"] +"<span>" + item["count"] + "</span>" +"</div>").data("uid", item["id"]);
 					$("#board").append($div);
 					
 				});
@@ -73,10 +72,15 @@
 				});
 			}
 			
-			$.map($("#users > div"),function($elem){
+			$.map($(".currentBoard > div"),function($elem){
 				$elem = $($elem);
 				if($elem.data("uid")==data["from"]["id"]){
-					$("span",$elem).html("("+data["count"]+")");
+					$("span",$elem).html(data["count"]);
+				}
+			});
+			$.map(roominfo["users"],function(item){
+				if(item["id"]==data["from"]["id"]){
+					item["count"] = data["count"];
 				}
 			});
 			
@@ -97,14 +101,25 @@
 		if(user==null){
 			$("#users").html("");
 			$.map(roominfo["users"],function(item){
-				var $div = $("<div><img src='https://graph.facebook.com/"+item["id"] + "/picture?width=80&height=80'/>" + "</div>")
+				var $div = $("<div><img src='https://graph.facebook.com/"+item["id"] + "/picture?width=80&height=80'/><span></span></div>")
 						  .data("uid", item["id"]);
-				$("#users").append($div);
+				$(".currentBoard").append($div);
+				
+				var $div2 = $("<div><img src='https://graph.facebook.com/"+item["id"] + "/picture?width=80&height=80'/></div>")
+						  .data("uid", item["id"]);
+				$("#users").append($div2);
+				
 			});
 		}else{
-			var $div =$("<div><img src='https://graph.facebook.com/"+user["id"] + "/picture?width=80&height=80'/>" + "</div>")
+			var $div =$("<div><img src='https://graph.facebook.com/"+user["id"] + "/picture?width=80&height=80'/><span></span></div>")
 			 			.data("uid", user["id"]);
-			$("#users").append($div);
+			$(".currentBoard").append($div);
+			
+			var $div2 = $("<div><img src='https://graph.facebook.com/"+user["id"] + "/picture?width=80&height=80'/></div>")
+						  .data("uid", user["id"]);
+						  
+			$("#users").append($div2);
+			
 		}
 	}
 	var roominfo = null;
@@ -163,6 +178,9 @@
   
   <div class="touchCover hk_cover hkbg_blue"><button>Pause</button></div>
   <div class="touchControl hkbg_blue"></div>
+  
+  <div class="currentBoard"></div>
+  
   <div id="touchboard" style="padding-top: 50px;">
   	<center>
 		<div class="touchArea">
@@ -361,16 +379,7 @@
   
 		  //player.play();
 	  });
-  
-	  
-	  $touchArea.mouseup(function(){
-		  console.log("up");
-	  });
-  
-	  $touchArea.mousedown(function(){
-		  console.log("down");
-	  });
-  
+	    
 	  player.src="./audio/wtf.mp3";
 	  //player.src="./audio/wtf2.mp3";
 	  //$touchArea.trigger('click'); 

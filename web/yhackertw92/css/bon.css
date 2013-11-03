@@ -42,6 +42,31 @@ body{
 	text-align:center;
 	
 }
+.currentBoard {
+	position:fixed;
+	left:0px;
+	bottom:60px;
+	
+}
+.currentBoard > div {
+	display:inline-block;
+	position:relative;
+}
+.currentBoard  img {
+	width:80px; 
+	border-radius:50%;
+}
+.currentBoard  span {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background-color: red;
+	color: #FFF;
+	border-radius: 50%;
+	font-size: 20px;
+	padding: 3px 7px;
+	text-align: center;
+}
 
 #users {
 	padding-top:60px;
