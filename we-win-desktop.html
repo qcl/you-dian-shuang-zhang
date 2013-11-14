@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<title>油電雙掌</title>
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js" ></script>
+<script type="text/javascript" src="./js/bumbler-to-speech.js" ></script>
+<style>
+body{
+    background: url("http://res.news.ifeng.com/b52d6dcee929704a/2012/0114/rdn_4f117dd7815f3.jpg") black center no-repeat;
+}
+
+h1, li,p{
+    color: white;
+}
+
+div{
+    width:100px;
+    height:100px;
+}
+
+audio{
+    display: none;
+    position: fixed;
+    top: -1000px;
+    left: -1000px;
+}
+</style>
+</head>
+<body>
+<center>
+<h1>我們贏啦</h1>
+<audio id="ma-speech" preload="auto">
+    <source src="./audio/one-to-ten.mp3" type="audio/mpeg" />
+</audio>
+</center>
+
+<div style="width: 100%; height: 400px;"></div>
+
+
+<script>
+
+$(function(){
+
+    var audio = $("#ma-speech")[0];
+    audio.load();
+    audio.play();
+    audio.pause();
+
+    var wewin = function(){
+
+        speaker.numberQueue = ["wewin","wewin","wewin"];
+        speaker.play();
+
+    };
+
+    $(document).click(function(){
+    
+        wewin();
+    
+    });
+
+    wewin();
+
+
+
+});
+
+</script>
+</body>
+</html>

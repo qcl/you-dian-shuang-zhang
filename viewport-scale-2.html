@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=2" />
+<title>油電雙掌</title>
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js" ></script>
+<style>
+body{
+    background: black;
+}
+
+p{
+    color: white;
+}
+
+img{
+    display: block;
+}
+</style>
+</head>
+<body>
+<center>
+<img src="./img/yd.png" />
+<img src="./img/sz.png" />
+<p>http://yhackertw92.appspot.com/</p>
+<p id="screenInfo"></p>
+</center>
+<script>
+
+var updateInfo = function(){
+    var win_w = $(window).width();
+    var win_h = $(window).height();
+
+    var doc_w = $(document).width();
+    var doc_h = $(document).height();
+
+    $("#screenInfo").html("Window: "+win_w+" x "+win_h+",Document: "+doc_w+" x "+doc_h);
+
+};
+
+$(function(){
+    
+    updateInfo();
+    $(window).resize(function(){
+        console.log("!");
+        updateInfo();
+    })
+
+});
+
+</script>
+</body>
+</html>

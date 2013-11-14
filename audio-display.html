@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<title>油電雙掌</title>
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js" ></script>
+<script type="text/javascript" src="./js/bumbler-to-speech.js" ></script>
+<style>
+body{
+    background: black;
+}
+
+li,p{
+    color: white;
+}
+
+div{
+    width:100px;
+    height:100px;
+}
+
+audio{
+    display: none;
+}
+</style>
+</head>
+<body>
+<center>
+<p>邦伯語音</p>
+<audio id="ma-speech" preload="auto" controls autoplay>
+    <source src="./audio/all_v1.mp3" type="audio/mpeg" />
+</audio>
+<p id="ma-play">播放</p>
+<p id="ma-pause">暫停</p>
+</center>
+<ul>
+<li>
+做好準備
+</li>
+<li>
+拜託噢
+</li>
+<li>
+沒有啦
+</li>
+<li>
+我們贏啦～
+</li>
+<li>
+非常不簡單
+</li>
+<li>
+非常不滿意
+</li>
+<li>
+開始
+</li>
+<li>
+逆轟高灰
+</li>
+<li>
+表現是不差
+</li>
+<li>
+已經跨越了一個里程碑（掌聲）
+</li>
+<li>
+在關鍵時刻，做出明確的選擇
+</li>
+</ul>
+<script>
+
+$(function(){
+
+    var audio = $("#ma-speech")[0];
+
+    $("#ma-play").click(function(){
+        audio.play();
+    });
+    $("#ma-pause").click(function(){
+        audio.pause();
+    });
+
+    //audio.load();
+    //audio.play();
+
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+<title>油電雙掌</title>
+<script type="text/javascript" src="./js/jquery-2.0.3.min.js" ></script>
+<style>
+body{
+    background: black;
+}
+
+p{
+    color: white;
+}
+
+div{
+    width:100px;
+    height:100px;
+}
+
+.circle{
+    border-radius: 50%;
+    background: transparent;
+    border: 8px #56bdeb solid; 
+
+    -webkit-animation-name: go;
+    -webkit-animation-iteration-count: 3;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-delay: 3s;
+}
+
+@-webkit-keyframes go{
+    from {
+        -webkit-transform: scale(1);
+    }
+    to {
+        -webkit-transform: scale(4);
+        border: 2px red solid;
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+<body>
+<center>
+<div>
+</div>
+<p></p>
+<div class="circle">
+</div>
+</center>
+<script>
+
+
+</script>
+</body>
+</html>
